@@ -84,7 +84,7 @@ router.delete("/delete/:post_id", (req, res)=>{
             (blogObject) => blogObject.post_id != req.params.post_id
         );
 
-        if(blogArray.length === filteredBlogArray.length){
+        if(blogArray.length == filteredBlogArray.length){
             throw new Error ("Job Not Found")
         }
 
