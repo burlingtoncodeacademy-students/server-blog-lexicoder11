@@ -1,3 +1,4 @@
+// global variables to ensure routing and importing information
 const router = require("express").Router();
 const fs = require("fs");
 const { v4: uuidv4 } = require('uuid');
@@ -11,6 +12,7 @@ router.get("/all",(req,res)=>{
     res.json({message: "Success", blog: blogArray });
 });
 
+// GET ID
 router.get("/get-id/:post_id", (req, res)=>{
     try {
         const url = (req.params.post_id);
@@ -31,24 +33,28 @@ router.get("/get-id/:post_id", (req, res)=>{
     }
 
 });
-
+// Post to add new items to the blog
 router.post("/add", (req,res)=>{
     const {post_id, title, author, body} = req.body
     let blogArray = read();
+    // the content of the blog
     let newBlog = {
         post_id: uuidv4(),
         title: title,
         author: author,
         body: body,
     };
+    // the new content of the blog is added to the end
     blogArray.push(newBlog);
     save(blogArray);
     res.json({message: "New blog content added",
     blog : blogArray,
+    // gives the count of how many blogs you have
     recordCount: blogArray.length,});
     
 });
 
+// Patch to updated the blog
 router.patch("/update/:id", (req, res)=>{
     try {
         const id = req.params.id
@@ -74,7 +80,7 @@ router.patch("/update/:id", (req, res)=>{
         
     }
 });
-
+// delete a blog if you want
 router.delete("/delete/:post_id", (req, res)=>{
     try {
         console.log(req.params.post_id);
@@ -87,7 +93,7 @@ router.delete("/delete/:post_id", (req, res)=>{
         if(blogArray.length == filteredBlogArray.length){
             throw new Error ("Job Not Found")
         }
-
+// succesfully deleted a blog
         res.json({
             message: "blog deleted",
             blog: filteredBlogArray,
